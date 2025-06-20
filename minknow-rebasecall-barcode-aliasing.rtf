@@ -1,33 +1,36 @@
-#Move to directory containing your input fastq.gz files
-cd /mnt/c/Users/trent/’your/path/to/input/data’/
- 
-#Define parent folder containing subdirectories for each native barcode
-PARENT_FOLDER=/’your/path/to/input/data/folder’/
+#Assumes input fastq.gz files are demultiplexed according to ONT native barcode following rebasecalling in MinKNOW
+#Navigate to parent folder containing subfolders of demultiplexed fastq.gz files per barcode
+cd /’your/path/to/input/data’/
+
+#Define parent folder
+PARENT_FOLDER=/’your/path/to/input/data’/
  
 #Make destination folder for concatenated output
-mkdir /‘path/to/concatenated/fastq/output/folder’/
+mkdir /‘your/path/to/concatenated/fastq/output/folder’/
  
-#Define destination folder for concatenated output files
+#Define destination folder
 DESTINATION_FOLDER=/'your/path/to/concatenated/fastq/output/folder’/
  
 #Navigate to input folder 
-cd /’your/path/to/input/data/folder’/
+cd /’your/path/to/input/data’/
  
-#Run loop from within your input data directory
+#Run loop from within your parent folder
 #PCID = sampleID
 for PCID_FOLDER in $PARENT_FOLDER/*/; do echo $PCID_FOLDER; PCID=$(basename "$PCID_FOLDER"); echo "$PCID PROCESSING"; cat "$PCID_FOLDER"/*.fastq.gz > "$DESTINATION_FOLDER/$PCID.fastq.gz"; echo "$PCID COMPLETE"; done
  
-#Navigate to output folder 
-cd /‘path/to/concatenated/fastq/output/folder’/
+#Navigate to destination folder 
+cd /‘your/path/to/concatenated/fastq/output/folder’/
  
 #Prepare sample sheet (CSV file with two columns: barcode,PCID) 
-#and upload to a new folder
+#In a separate directory, make a new folder to upload your sample sheet to  
+#Upload your sample sheet to /‘your/path/to/sample/sheet/folder’/ 
+
 #Define path to sample sheet
-Test1_SampleSheet="/mnt/c/Users/trent/Desktop/Test1/Test1_SampleSheet.csv"
+SampleSheet="/‘your/path/to/sample/sheet/folder/nameofsamplesheet.csv'"
  
-#Run code to rename barcode.fastq.gz files as PCID.fastq.gz files
+#Rename concatenated barcode.fastq.gz files as PCID.fastq.gz files
 #The 'barcode PCID' is renamed according to the column headers in the sample sheet
-tail -n +2 "$Test1_SampleSheet" | while IFS=',' read barcode PCID; do
+tail -n +2 "$SampleSheet" | while IFS=',' read barcode PCID; do
     barcode=$(echo "$barcode" | tr -d '\r·' | xargs)
     PCID=$(echo "$PCID" | tr -d '\r·' | xargs)
  
