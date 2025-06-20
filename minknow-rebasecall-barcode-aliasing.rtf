@@ -1,32 +1,32 @@
 #Move to directory containing your input fastq.gz files
 cd /mnt/c/Users/trent/’your/path/to/input/data’/
  
-#Define parent folder containing PCID-named subdirectories
-PARENT_FOLDER=/mnt/c/Users/trent/’your/path/to/input/data’/
+#Define parent folder containing subdirectories for each native barcode
+PARENT_FOLDER=/’your/path/to/input/data/folder’/
  
 #Make destination folder for concatenated output
-Mkdir /mnt/c/Users/trent/‘path/to/concatenated/fastq/output/folder’/
+mkdir /‘path/to/concatenated/fastq/output/folder’/
  
 #Define destination folder for concatenated output files
-DESTINATION_FOLDER=/'your/path/to/Concatenated/FASTQ/output/folder’/
+DESTINATION_FOLDER=/'your/path/to/concatenated/fastq/output/folder’/
  
 #Navigate to input folder 
-cd /mnt/c/Users/trent/’your/path/to/input/data’/
+cd /’your/path/to/input/data/folder’/
  
 #Run loop from within your input data directory
-#PCID = sample ID name
+#PCID = sampleID
 for PCID_FOLDER in $PARENT_FOLDER/*/; do echo $PCID_FOLDER; PCID=$(basename "$PCID_FOLDER"); echo "$PCID PROCESSING"; cat "$PCID_FOLDER"/*.fastq.gz > "$DESTINATION_FOLDER/$PCID.fastq.gz"; echo "$PCID COMPLETE"; done
  
 #Navigate to output folder 
-cd /mnt/c/Users/trent/‘path/to/concatenated/fastq/output/folder’/
+cd /‘path/to/concatenated/fastq/output/folder’/
  
-#Upload sample sheet (CSV file with two columns: barcode,PCID) to a new folder (do this via Desktop)
- 
-#Define sample sheet path
+#Prepare sample sheet (CSV file with two columns: barcode,PCID) 
+#and upload to a new folder
+#Define path to sample sheet
 Test1_SampleSheet="/mnt/c/Users/trent/Desktop/Test1/Test1_SampleSheet.csv"
  
 #Run code to rename barcode.fastq.gz files as PCID.fastq.gz files
-#The 'barcode PCID' needs to be changed to whatever the two column headers are for the sample sheet
+#The 'barcode PCID' is renamed according to the column headers in the sample sheet
 tail -n +2 "$Test1_SampleSheet" | while IFS=',' read barcode PCID; do
     barcode=$(echo "$barcode" | tr -d '\r·' | xargs)
     PCID=$(echo "$PCID" | tr -d '\r·' | xargs)
