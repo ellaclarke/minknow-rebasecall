@@ -13,7 +13,7 @@ DESTINATION_FOLDER=/'your/path/to/Concatenated/FASTQ/output/folder’/
 #Navigate to input folder 
 cd /mnt/c/Users/trent/’your/path/to/input/data’/
  
-#Run loop *copy and paste entire loop script and run it from within your input data directory
+#Run loop from within your input data directory
 #PCID = sample ID name
 for PCID_FOLDER in $PARENT_FOLDER/*/; do echo $PCID_FOLDER; PCID=$(basename "$PCID_FOLDER"); echo "$PCID PROCESSING"; cat "$PCID_FOLDER"/*.fastq.gz > "$DESTINATION_FOLDER/$PCID.fastq.gz"; echo "$PCID COMPLETE"; done
  
